@@ -158,8 +158,8 @@ module pp_reduction_exact#(parameter Bitwidth=8)(
     wire [2*Bitwidth:0]cin1,cin2;
     wire [2*Bitwidth-1:0]pp_1st_stage_op[Bitwidth/2-1:0];
     
-    assign cin1[0]=0;
-    assign cin2[0]=0;
+    assign cin1[Bitwidth:0]=0;
+    assign cin2[Bitwidth:0]=0;
     
     //************ First Stage **************//
      
@@ -167,7 +167,43 @@ module pp_reduction_exact#(parameter Bitwidth=8)(
     
     generate
         for(i=0;i<2*Bitwidth;i++) begin
+            if(i>=Bitwidth) begin
              single_row_reduction_firststage_exact#(.Bitwidth(Bitwidth)) firststage (.pp_row({pp[7][i],pp[6][i],pp[5][i],pp[4][i],pp[3][i],pp[2][i],pp[1][i],pp[0][i]}),.cin1(cin1[i]),.cin2(cin2[i]),.pp_second_stage({pp_1st_stage_op[0][i],pp_1st_stage_op[1][i],pp_1st_stage_op[2][i],pp_1st_stage_op[3][i]}),.cout1(cin1[i+1]),.cout2(cin2[i+1]));
+            end
+            else if(i == 3)
+                begin
+
+                    // exact_compressor_5_2 exact52(.p(pp_row[Bitwidth-1:Bitwidth-5]),.cin1(cin1),.cin2(cin2),.sum(pp_second_stage[3]),.carry(pp_second_stage[2]),.cout1(cout1),.cout2(cout2));
+                    // FA exact32(.p(pp_row[2:0]),.w(pp_second_stage[1:0]));
+
+                    exact_compressor_4_2 exact42(.p({pp[7][i],pp[6][i],pp[5][i],pp[4][i]}),.cin(cin1[i]),.sum(pp_1st_stage_op[0][i]),.carry(pp_1st_stage_op[1][i]),.cout(cin1[i+1]));
+                end
+            else if( i==4 )
+                begin
+                    exact_compressor_4_2 exact42(.p({pp[7][i],pp[6][i],pp[5][i],pp[4][i]}),.cin(cin1[i]),.sum(pp_1st_stage_op[0][i]),.carry(pp_1st_stage_op[1][i]),.cout(cin1[i+1]));
+                    //exact_compressor_5_2 exact52(.p(pp_row[Bitwidth-1:Bitwidth-5]),.cin1(cin1),.cin2(cin2),.sum(pp_second_stage[3]),.carry(pp_second_stage[2]),.cout1(cout1),.cout2(cout2));
+                    // FA exact32(.p(pp_row[5:7]),.w(pp_second_stage[1:0]));
+                    assign pp_1st_stage_op[3][i] = pp[4][i];
+                    assign pp_1st_stage_op[2][i] = 2'b0;
+                end
+            else if( i==5 )
+                begin
+                    exact_compressor_4_2 exact42(.p({pp[7][i],pp[6][i],pp[5][i],pp[4][i]}),.cin(cin1[i]),.sum(pp_1st_stage_op[0][i]),.carry(pp_1st_stage_op[1][i]),.cout(cin1[i+1]));
+                    HA exact32(.p({pp[3][i],pp[2][i]}),.w({pp_1st_stage_op[2][i],pp_1st_stage_op[3][i]}));
+
+                end  
+            else if( i==6 )
+                begin
+                    exact_compressor_4_2 exact42(.p({pp[7][i],pp[6][i],pp[5][i],pp[4][i]}),.cin(cin1[i]),.sum(pp_1st_stage_op[0][i]),.carry(pp_1st_stage_op[1][i]),.cout(cin1[i+1]));
+                    FA exact32(.p({pp[3][i],pp[2][i],pp[1][i]}),.w({pp_1st_stage_op[2][i],pp_1st_stage_op[3][i]}));
+
+                end  
+            else if( i==7 )
+                begin
+                    exact_compressor_4_2 exact42_1(.p({pp[7][i],pp[6][i],pp[5][i],pp[4][i]}),.cin(cin1[i]),.sum(pp_1st_stage_op[0][i]),.carry(pp_1st_stage_op[1][i]),.cout(cin1[i+1]));
+                    exact_compressor_4_2 exact42_2(.p({pp[3][i],pp[2][i],pp[1][i],pp[0][i]}),.cin(cin2[i]),.sum(pp_1st_stage_op[0][i]),.carry(pp_1st_stage_op[1][i]),.cout(cin2[i+1]));
+
+                end             
         end
     endgenerate
     
