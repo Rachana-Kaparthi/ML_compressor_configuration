@@ -53,6 +53,23 @@ endmodule
     
 //endmodule
 
+
+module top_approx1#(parameter Bitwidth=8)(
+    input [Bitwidth-1:0]x,y,
+    output [2*Bitwidth-1:0]res
+    );
+    
+    wire pp[Bitwidth-1:0][2*Bitwidth-1:0];
+    wire [2*Bitwidth-1:0]pp1,pp2;
+    
+    pp_gen#(.Bitwidth(Bitwidth)) uut(x,y,pp);
+    pp_reduction_approx1#(.Bitwidth(Bitwidth)) uut1(pp,pp1,pp2);
+
+    assign res=pp1+(pp2<<1);
+    
+endmodule
+
+
 module top_approx2#(parameter Bitwidth=8)(
     input [Bitwidth-1:0]x,y,
     output [2*Bitwidth-1:0]res
