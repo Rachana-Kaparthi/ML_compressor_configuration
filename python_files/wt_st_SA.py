@@ -3,20 +3,23 @@ import numpy as np
 
 def matrix_mul_exact(A,B):
     ipA=np.transpose(A)
-    C = [[0 for _ in range(3)] for _ in range(3)]
+    C = 0
     for i in range(len(ipA)):
-        for j in range(len(B[0])):
-            for k in range(len(B)):
-                C[i][j] += PE_exact(ipA[i][k], B[k][j])
+        for j in range(len(B)):
+                C += PE_exact(ipA[i][j], B[i][j])
     return C
 
 def matrix_mul_approx(A,B,pos):
     ipA=np.transpose(A)
-    C = [[0 for _ in range(3)] for _ in range(3)]
+    C = 0
     for i in range(len(ipA)):
-        for j in range(len(B[0])):
-            for k in range(len(B)):
-                C[i][j] += PE_approx(ipA[i][k], B[k][j], pos)
+        for j in range(len(B)):
+            C += PE_approx(ipA[i][j], B[i][j], pos)
+    # C = [[0 for _ in range(3)] for _ in range(3)]
+    # for i in range(len(ipA)):
+    #     for j in range(len(B[0])):
+    #         for k in range(len(B)):
+    #             C[i][j] += PE_approx(ipA[i][k], B[k][j], pos)
     return C
  
 def wt_st_sa_3x3_exact(matA,matB):
@@ -259,15 +262,17 @@ def enable_PE(n,clk_no):
     return matrix[0:9][0:9]
 
 
-# matA=np.random.randint(-128,127, size=(3,3))
+# A=np.random.randint(0,15, size=(3,3))
 # print("\n \n matrix A :")
 # for i in range(3):
-#     print(matA[i])
+#     print(A[i])
 
-# matB=np.random.randint(-128,127, size=(3,3))
+# B=np.random.randint(0,15, size=(3,3))
 # print("\n \n matrix B :")
 # for i in range(3):
-#     print(matB[i])
+#     print(B[i])
+# print( "exact",matrix_mul_exact(A,B))
+# print( "approx",matrix_mul_approx(A,B,[1,4,5,6,2,3]))
 
 # # pos=[[7,7,7],[7,7,8],[6,6,6]]
 # op_mat=wt_st_sa_3x3_exact(matA,matB)

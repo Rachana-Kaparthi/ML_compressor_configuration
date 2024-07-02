@@ -7,7 +7,7 @@ from wt_st_SA import *
 from timeit import default_timer as timer
 
 
-def conv_3x3_sobel_exact(ipimage,kernal1,kernal2):
+def conv_3x3_sobel_exact(ipimage,kernal1):
 
     height=len(ipimage)
     width=len(ipimage[0])
@@ -17,25 +17,14 @@ def conv_3x3_sobel_exact(ipimage,kernal1,kernal2):
 
     exact_op_k1=[[0 for i in range(width)] for j in range(height)]
 
-    exact_op_k2=[[0 for i in range(width)] for j in range(height)]
-
     exact_op=[[0 for i in range(width)] for j in range(height)]
 
     for i in range(1,height-1):
         for j in range(1,width-1):
             inmat=[ipimage[i+1][j-1:j+2], ipimage[i][j-1:j+2]  ,ipimage[i-1][j-1:j+2]]
-            exactop_k1=matrix_mul_exact(inmat,kernal1)
+            exact_op_k1[i][j]=matrix_mul_exact(inmat,kernal1)
             
-            exactop_k2=matrix_mul_exact(inmat,kernal2)
-            
-            exact_op_k1[i][j]=(exactop_k1[0][0]+exactop_k1[1][1]+exactop_k1[2][2])/32
-
-            exact_op_k2[i][j]=(exactop_k2[0][0]+exactop_k2[1][1]+exactop_k2[2][2])/32
-
-    exact_op_k1=np.array(exact_op_k1)
-    exact_op_k2=np.array(exact_op_k2)
-
-    exact_op=np.sqrt((np.square(exact_op_k1))+(np.square(exact_op_k2)))
+    exact_op=np.array(exact_op_k1)
 
     exact_op1=exact_op.astype('float64')
 
@@ -47,7 +36,7 @@ def conv_3x3_sobel_exact(ipimage,kernal1,kernal2):
     return [exact_op]
 
 
-def conv_3x3_sobel_approx(ipimage,kernal1,kernal2,pos):
+def conv_3x3_sobel_approx(ipimage,kernal1,pos):
     
     # pos1=[[pos[0:7],pos[7:14],pos[14:21]],[pos[21:28],pos[28:35],pos[35:42]],[pos[42:49],pos[49:56],pos[56:63]]]
     # pos2=[[pos[63:70],pos[70:77],pos[77:84]],[pos[84:91],pos[91:98],pos[98:105]],[pos[105:112],pos[112:119],pos[119:126]]]
@@ -64,25 +53,16 @@ def conv_3x3_sobel_approx(ipimage,kernal1,kernal2,pos):
   
     approx_op_k1=[[0 for i in range(width)] for j in range(height)]
 
-    approx_op_k2=[[0 for i in range(width)] for j in range(height)]
-
     approx_op=[[0 for i in range(width)] for j in range(height)]
 
     for i in range(1,height-1):
         for j in range(1,width-1):
             inmat=[ipimage[i+1][j-1:j+2], ipimage[i][j-1:j+2]  ,ipimage[i-1][j-1:j+2]]
-            approxop_k1 = matrix_mul_approx(inmat,kernal1,pos)
-
-            approxop_k2 = matrix_mul_approx(inmat,kernal2,pos)
+            approx_op_k1[i][j] = matrix_mul_approx(inmat,kernal1,pos)
             
-            approx_op_k1[i][j]=(approxop_k1[0][0]+approxop_k1[1][1]+approxop_k1[2][2])/32
+            # approx_op_k1[i][j]=(approxop_k1[0][0]+approxop_k1[1][1]+approxop_k1[2][2])/32
 
-            approx_op_k2[i][j]=(approxop_k2[0][0]+approxop_k2[1][1]+approxop_k2[2][2])/32
-
-    approx_op_k1=np.array(approx_op_k1)
-    approx_op_k2=np.array(approx_op_k2)
-
-    approx_op=np.sqrt((np.square(approx_op_k1))+(np.square(approx_op_k2)))
+    approx_op=np.array(approx_op_k1)
 
     approx_op1=approx_op.astype('float64')
 
@@ -92,6 +72,8 @@ def conv_3x3_sobel_approx(ipimage,kernal1,kernal2,pos):
     approx_op=R2/max_ap
                    
     return [approx_op]
+
+
 
 
 
