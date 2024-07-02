@@ -115,14 +115,16 @@ def PE_Approx_42(pp,pos):
             [pp_1st_stage[3][i],pp_1st_stage[2][i+1]]=compressors_42(pp[0][i],pp[1][i],pp[2][i],pp[3][i],pos[3])
             [pp_1st_stage[0][i],pp_1st_stage[1][i+1]]=HA(pp[4][i],pp[5][i])
         elif i==4:
-            [pp_1st_stage[3][i],pp_1st_stage[2][i+1]]=compressors_42(pp[0][i],pp[1][i],pp[2][i],pp[3][i],pos[4])
-            pp_1st_stage[0][i]= pp[4][i]           
+            [pp_1st_stage[3][i],pp_1st_stage[2][i+1]]=FA(pp[0][i],pp[1][i],pp[2][i])
+            pp_1st_stage[0][i]= pp[3][i]           
         elif i==3:
-            [pp_1st_stage[3][i],pp_1st_stage[2][i+1]]=compressors_42(pp[0][i],pp[1][i],pp[2][i],pp[3][i],pos[5])
+            [pp_1st_stage[3][i],pp_1st_stage[2][i+1]]=FA(pp[0][i],pp[1][i],pp[2][i])
         elif i==2:
-            [pp_1st_stage[2][i+1],pp_1st_stage[3][i]]=FA(pp[0][i],pp[1][i],pp[2][i])
+            [pp_1st_stage[2][i+1],pp_1st_stage[3][i]]= [0,0]
+            # [pp_1st_stage[2][i+1],pp_1st_stage[3][i]]=FA(pp[0][i],pp[1][i],pp[2][i])
         elif i==1:
-            [pp_1st_stage[3][i],pp_1st_stage[2][i+1]] = HA(pp[0][i],pp[1][i])
+            [pp_1st_stage[2][i+1],pp_1st_stage[3][i]]= [0,0]
+            # [pp_1st_stage[3][i],pp_1st_stage[2][i+1]] = HA(pp[0][i],pp[1][i])
         elif i==0:
             [pp_1st_stage[3][i],pp_1st_stage[2][i+1],pp_1st_stage[1][i+1],pp_1st_stage[0][i]]=[pp[0][i],0,0,0]
     # print("pp_1st_stage = ",pp_1st_stage)

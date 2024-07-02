@@ -58,7 +58,10 @@ def conv_3x3_sobel_approx(ipimage,kernal1,pos):
     for i in range(1,height-1):
         for j in range(1,width-1):
             inmat=[ipimage[i+1][j-1:j+2], ipimage[i][j-1:j+2]  ,ipimage[i-1][j-1:j+2]]
-            approx_op_k1[i][j] = matrix_mul_approx(inmat,kernal1,pos)
+            if(inmat == [[0,0,0],[0,0,0],[0,0,0]]):
+                approx_op_k1[i][j] = 0
+            else :
+                approx_op_k1[i][j] = matrix_mul_approx(inmat,kernal1,pos)
             
             # approx_op_k1[i][j]=(approxop_k1[0][0]+approxop_k1[1][1]+approxop_k1[2][2])/32
 
@@ -72,7 +75,6 @@ def conv_3x3_sobel_approx(ipimage,kernal1,pos):
     approx_op=R2/max_ap
                    
     return [approx_op]
-
 
 
 
