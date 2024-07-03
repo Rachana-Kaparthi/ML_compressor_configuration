@@ -1,6 +1,7 @@
 def power_45nm(position):
     n=len(position)
-    power=5.8566
+    # initial power of 16exact42,9FA,8exact52,1HA,16FA,2pos4 compressors
+    power=5.82
 
     for i in range(n):
     
@@ -37,7 +38,9 @@ def power_45nm(position):
 
 def area_45nm(position):
     n=len(position)
-    area=428.184
+    
+    # initial area of 16exact42,9FA,8exact52,1HA,16FA,2pos4 compressors
+    area=428.868
     for i in range(n):
         if position[i]==1:
             #Approx_52_42_1
