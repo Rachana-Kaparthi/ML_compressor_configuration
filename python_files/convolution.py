@@ -80,3 +80,20 @@ def conv_3x3_sobel_approx(ipimage,kernal1,pos):
 
 
 
+
+
+# A=np.random.randint(0,15, size=(10,10))
+# print("\n \n matrix A :")
+# for i in range(3):
+#     print(A[i])
+
+# B=np.random.randint(0,15, size=(3,3))
+# print("\n \n matrix B :")
+# for i in range(3):
+#     print(B[i])
+# # print( "exact",matrix_mul_exact(A,B))
+# conv_3x3_sobel_exact(A,B)
+# conv_3x3_sobel_approx(A,B,[1,4,5,6])
+
+
+
