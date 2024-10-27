@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 // ************** Single Row Reduction module Exact ***************//
-
+//***************************Edit the compressor position numbers according to the required configuration *************************//
 module single_row_reduction_firststage_exact#(parameter Bitwidth=8)(
 
     input [Bitwidth-1:0]pp_row,
